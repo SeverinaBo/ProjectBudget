@@ -2,6 +2,7 @@ package src.projectSrc;
 
 
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -9,54 +10,38 @@ import java.util.*;
 
 
 public class Application  {
-
-
     public static Scanner scanner = new Scanner(System.in);
     static Budget budget = new Budget();
 
 
-    public static void main(String[] args) {
-
-        boolean proceedApp = true;
-        String input = String.valueOf(mainMenu(scanner));
-        while (proceedApp) {
+    public static void main(String[] args) throws IOException {
+        int input = scanner.nextInt();
+        mainMenu(scanner);
+        while (true) {
             switch (input) {
-                case "1":
-                    Budget.addRecord(newIncomeRecord(scanner));
-                    break;
-                case "2":
-                    Budget.addRecord(newExpensesRecord(scanner));
-                    break;
-                case "3":
+                case 1 -> newIncomeRecord(scanner);
+                case 2 -> newExpensesRecord(scanner);
+                case 3 -> {
                     System.out.println("All records: ");
                     printRecords(budget.receiveAllRecords());
                     printRecords(budget.receiveAllIncomeRecords());
                     printRecords(budget.receiveAllExpenseRecords());
-                    break;
-                case "4":
-                    editRecord(scanner, budget);
-                    break;
-                case "5":
-                    printBalance(budget);
-                    break;
-                case "6":
-                    budget.receiveAllRecords().addAll(Failas.printData());
-                    break;
-                case "7":
-                    Failas.saveData((ArrayList<Record>) budget.receiveAllRecords());
-                    break;
-                case "8":
-                    deleteRecord(scanner, budget);
-                    break;
-                case "9":
-                    proceedApp = false;
-                    break;
-                default:
-                    System.out.println("Choose:");
-                    mainMenu(scanner);
+                }
+                case 4 -> editRecord(scanner, budget);
+                case 5 -> printBalance(budget);
+                case 6 -> budget.receiveAllRecords().addAll(Failas.printData());
+                case 7 -> Failas.saveData((ArrayList<Record>) budget.receiveAllRecords());
+                case 8 -> deleteRecord(scanner, budget);
+                case 9 -> {
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                }
+                default -> {
+                    System.out.println("Invalid choice.");
+                }
             }
+
         }
-        scanner.close();
     }
 
     private static int mainMenu(Scanner scanner){
@@ -70,13 +55,13 @@ public class Application  {
                         [6] - print from file
                         [7] - save to file
                         [8] - delete record
-                        [9] - close the program\s""");
+                        [9] - close the program""");
         return numberChoice(scanner, 1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     private static Record newIncomeRecord(Scanner scanner) {
         Record recordIncomeArr = new Record(Record.recordIncomeArr);
-        ;
+
         System.out.println("Income amount: ");
         try {
             recordIncomeArr.setIncomeAmount(scanner.nextDouble());
@@ -286,6 +271,8 @@ public class Application  {
 
     private static void printBalance(Budget budget){
         double balance = budget.calculateBalance();
-        System.out.printf("Balance: %.2fEur%n", balance);
+        System.out.printf(String.format("Balance: %.2fEur%n", balance));
     }
+
+
 }

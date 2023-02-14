@@ -1,20 +1,10 @@
 package src.projectSrc;
-
-
-
-
-
-
 import java.time.LocalDate;
 import java.util.*;
 
 
 
 public class Budget extends Record{
-
-
-
-
 
     public  Budget(long id, double incomeAmount, String incomeInfo, IncomeCategory incomeCategoryEnum, IncomeCategory incomeCategory, LocalDate localDate, double expensesAmount, String expensesInfo, ExpensesCategory expenseCategoryEnum, String expensesPaymentMethod, ExpensesCategory expensesCategory) {
         super(id, incomeAmount, incomeInfo, incomeCategoryEnum, incomeCategory, localDate, expensesAmount, expensesInfo, expenseCategoryEnum, expensesPaymentMethod, expensesCategory);
@@ -23,7 +13,7 @@ public class Budget extends Record{
     public Budget() {
 
     }
-    public   List<Record> receiveAllRecords() {
+    public  List<Record> receiveAllRecords() {
         List<Record> incomeExpenseArr = new ArrayList<>();
         incomeExpenseArr.addAll(recordIncomeArr);
         incomeExpenseArr.addAll(recordExpensesArr);
@@ -46,7 +36,7 @@ public class Budget extends Record{
     }
     public  ArrayList<Record> receiveAllIncomeRecords() {
         ArrayList<Record> incomeRecordArr = new ArrayList<>();
-        for (Record record : incomeRecordArr) {
+        for (Record record : recordIncomeArr) {
             if (record != null) {
                 incomeRecordArr.add(record);
             }
@@ -65,19 +55,26 @@ public class Budget extends Record{
     }
 
 
+    public double calculateBalance() {
+        double incomeTotal = 0;
+        double expensesTotal = 0;
 
-
-
-    public  double calculateBalance() {
-        double balance = 0;
-        for(Record record : receiveAllRecords()) {
-            if (record != null) {
-                balance += record.getIncomeAmount();
-                balance -= record.getExpensesAmount();
-            }
+        // Calculate the total income
+        for (Record record : recordIncomeArr) {
+            incomeTotal += record.getIncomeAmount();
         }
+
+        // Calculate the total expenses
+        for (Record record : recordExpensesArr) {
+            expensesTotal += record.getExpensesAmount();
+        }
+
+        // Calculate the balance
+        double balance = incomeTotal - expensesTotal;
         return balance;
     }
+
+
 
     public void deleteRecord(long id) {
         Record emptyRecord = new Record();
