@@ -4,30 +4,25 @@ import java.util.*;
 
 
 
-public class Budget extends Record{
+public class Budget {
 
-    public  Budget(long id, double incomeAmount, String incomeInfo, IncomeCategory incomeCategoryEnum, IncomeCategory incomeCategory, LocalDate localDate, double expensesAmount, String expensesInfo, ExpensesCategory expenseCategoryEnum, String expensesPaymentMethod, ExpensesCategory expensesCategory) {
-        super(id, incomeAmount, incomeInfo, incomeCategoryEnum, incomeCategory, localDate, expensesAmount, expensesInfo, expenseCategoryEnum, expensesPaymentMethod, expensesCategory);
+    public ArrayList<Record> records = new ArrayList<>();
+
+    public void addRecord(Record record) {
+        records.add(record);
     }
 
     public Budget() {
 
     }
-    public  List<Record> receiveAllRecords() {
-        List<Record> incomeExpenseArr = new ArrayList<>();
-        incomeExpenseArr.addAll(recordIncomeArr);
-        incomeExpenseArr.addAll(recordExpensesArr);
-        return incomeExpenseArr;
+    public  ArrayList<Record> receiveAllRecords() {
+        return records;
     }
 
-    public static void addRecord(Record record) {
-        recordIncomeArr.add(record);
-        recordExpensesArr.add(record);
 
-    }
 
-    public static Record printRecordById(long id) {
-        for (Record record : recordIncomeArr) {
+    public Record printRecordById(long id) {
+        for (Record record : records) {
             if (record.getId() == id) {
                 return record;
             }
@@ -35,56 +30,49 @@ public class Budget extends Record{
         return null;
     }
     public  ArrayList<Record> receiveAllIncomeRecords() {
-        ArrayList<Record> incomeRecordArr = new ArrayList<>();
-        for (Record record : recordIncomeArr) {
-            if (record != null) {
-                incomeRecordArr.add(record);
+        ArrayList<Record> incomeRecords = new ArrayList<>();
+        for (Record record : records) {
+            if (record instanceof IncomeRecord) {
+                incomeRecords.add(record);
             }
         }
-        return incomeRecordArr;
+        return incomeRecords;
     }
 
     public  ArrayList<Record> receiveAllExpenseRecords() {
-        ArrayList<Record> expenseRecordArr = new ArrayList<>();
-        for (Record record : recordExpensesArr) {
-            if (record != null) {
-                expenseRecordArr.add(record);
+        ArrayList<Record> expensesRecords = new ArrayList<>();
+        for (Record record : records) {
+            if (record instanceof ExpenseRecord) {
+                expensesRecords.add(record);
             }
         }
-        return expenseRecordArr;
+        return expensesRecords;
     }
 
 
     public double calculateBalance() {
-        double incomeTotal = 0;
-        double expensesTotal = 0;
-
-        // Calculate the total income
-        for (Record record : recordIncomeArr) {
-            incomeTotal += record.getIncomeAmount();
+        float balance = 0;
+        for(Record record : records){
+            if(record instanceof IncomeRecord){
+                balance += record.getAmount();
+            } else if (record instanceof ExpenseRecord) {
+                balance += record.getAmount();
+            }
         }
-
-        // Calculate the total expenses
-        for (Record record : recordExpensesArr) {
-            expensesTotal += record.getExpensesAmount();
-        }
-
-        // Calculate the balance
-        double balance = incomeTotal - expensesTotal;
         return balance;
     }
 
 
 
-    public void deleteRecord(long id) {
+    public boolean deleteRecord(long id) {
         Record emptyRecord = new Record();
         emptyRecord.setId(id);
-        receiveAllRecords().remove(emptyRecord);
+        return records.remove(emptyRecord);
     }
 
-    public void renewRecord(Record record) {
+    public boolean renewRecord(Record record) {
         deleteRecord(record.getId());
-        receiveAllRecords().add(record);
+        return records.add(record);
     }
 
 }

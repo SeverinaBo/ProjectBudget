@@ -66,23 +66,22 @@ public class Failas {
     private static Record recordFromCsvData(String csv) {
         String[] data = csv.split(",");
         Record record = new Record();
-        if (Record.RECORD_INCOME.equals(data[0])) {
-            Record incomeRecord = new Record();
+        if (IncomeRecord.recordType.equals(data[0])) {
+            IncomeRecord incomeRecord = new IncomeRecord();
             incomeRecord.setId(Long.parseLong(data[1]));
-            incomeRecord.setIncomeAmount(Double.parseDouble(data[2]));
-            incomeRecord.setLocalDate(LocalDate.parse(data[3]));
-            incomeRecord.setIncomeInfo(data[4]);
-            incomeRecord.setIncomeCategory(IncomeCategory.incomeCategoryByNumber(Integer.parseInt(data[5])));
+            incomeRecord.setAmount(Double.parseDouble(data[2]));
+            incomeRecord.setDate(LocalDate.parse(data[3]));
+            incomeRecord.setInfo(data[4]);
+            incomeRecord.setCategory(IncomeCategory.incomeCategoryByNumber(Integer.parseInt(data[5])));
             record = incomeRecord;
 
-        } else if (Record.RECORD_EXPENSES.equals(data[0])) {
-            Record expenseRecord = new Record();
+        } else if (ExpenseRecord.recordType.equals(data[0])) {
+            ExpenseRecord expenseRecord = new ExpenseRecord();
             expenseRecord.setId(Long.parseLong(data[1]));
-            expenseRecord.setExpensesAmount(Double.parseDouble(data[2]));
-            expenseRecord.setLocalDate(LocalDate.parse(data[3]));
-            expenseRecord.setExpensesInfo(data[4]);
-            expenseRecord.setExpensesCategory(ExpensesCategory.expensesCategoryByNumber(Integer.parseInt(data[5])));
-            expenseRecord.setExpensesPaymentMethod(data[6]);
+            expenseRecord.setAmount(Double.parseDouble(data[2]));
+            expenseRecord.setDate(LocalDate.parse(data[3]));
+            expenseRecord.setInfo(data[4]);
+            expenseRecord.setCategory(ExpensesCategory.expensesCategoryByNumber(Integer.parseInt(data[5])));
             record = expenseRecord;
         }
         return record;

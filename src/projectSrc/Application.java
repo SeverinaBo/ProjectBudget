@@ -10,14 +10,17 @@ import java.util.*;
 
 
 public class Application  {
+
+   public static ArrayList<Record> records = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
     static Budget budget = new Budget();
 
+    static Record record  = new Record();
 
     public static void main(String[] args) throws IOException {
         int input = scanner.nextInt();
-        mainMenu(scanner);
         while (true) {
+            mainMenu(scanner);
             switch (input) {
                 case 1 -> newIncomeRecord(scanner);
                 case 2 -> newExpensesRecord(scanner);
@@ -27,7 +30,7 @@ public class Application  {
                     printRecords(budget.receiveAllIncomeRecords());
                     printRecords(budget.receiveAllExpenseRecords());
                 }
-                case 4 -> editRecord(scanner, budget);
+                case 4 -> editRecord(scanner, record, budget);
                 case 5 -> printBalance(budget);
                 case 6 -> budget.receiveAllRecords().addAll(Failas.printData());
                 case 7 -> Failas.saveData((ArrayList<Record>) budget.receiveAllRecords());
@@ -40,7 +43,7 @@ public class Application  {
                     System.out.println("Invalid choice.");
                 }
             }
-
+scanner.close();
         }
     }
 
@@ -60,35 +63,34 @@ public class Application  {
     }
 
     private static Record newIncomeRecord(Scanner scanner) {
-        Record recordIncomeArr = new Record(Record.recordIncomeArr);
+        IncomeRecord incomeRecord = new IncomeRecord();
 
         System.out.println("Income amount: ");
         try {
-            recordIncomeArr.setIncomeAmount(scanner.nextDouble());
+            incomeRecord.setAmount(scanner.nextDouble());
         } catch (NumberFormatException nfe) {
-            System.out.println("Please input number ");
+            System.out.println("Please input a number ");
         }
         System.out.println("Income category: ");
-        for (IncomeCategory iC : IncomeCategory.values())
+        for (IncomeCategory iC : IncomeCategory.values()) {
             System.out.println(iC);
-
-        recordIncomeArr.setIncomeCategory(IncomeCategory.incomeCategoryByNumber(scanner.nextInt()));
+        }
+        int choice = scanner.nextInt();
+        incomeRecord.setCategory(IncomeCategory.incomeCategoryByNumber(choice));
 
         System.out.println("Income information:");
-        recordIncomeArr.setIncomeInfo(scanner.next());
+        incomeRecord.setInfo(scanner.next());
+        incomeRecord.setDate(LocalDate.now());
 
-        LocalDate data = recordIncomeArr.getLocalDate();
-        System.out.println(data);
-
-        System.out.println(recordIncomeArr);
-        return recordIncomeArr;
+        System.out.println(incomeRecord);
+        return incomeRecord;
     }
 
     private static Record newExpensesRecord(Scanner scanner){
-        Record recordExpensesArr = new Record(Record.recordExpensesArr);
+        ExpenseRecord expensesRecord = new ExpenseRecord();
 
         System.out.println("Expense amount: ");
-        recordExpensesArr.setExpensesAmount(scanner.nextDouble());
+        expensesRecord.setAmount(scanner.nextDouble());
 
         System.out.println("Expense category: ");
         try {
@@ -98,17 +100,14 @@ public class Application  {
             throw new RuntimeException(e);
         }
 
-        recordExpensesArr.setExpenseCategoryEnum(ExpensesCategory.expensesCategoryByNumber(scanner.nextInt()));
+        expensesRecord.setCategory(ExpensesCategory.expensesCategoryByNumber(scanner.nextInt()));
 
         System.out.println("Expense information:");
-        recordExpensesArr.setExpensesInfo(textInput(scanner));
+        expensesRecord.setInfo(textInput(scanner));
+        expensesRecord.setDate(LocalDate.now());
 
-        System.out.println("Expenses payment method: ");
-        recordExpensesArr.setExpensesPaymentMethod(textInput(scanner));
-
-        recordExpensesArr.localDate();
-        System.out.println(recordExpensesArr);
-        return recordExpensesArr;
+        System.out.println(expensesRecord);
+        return expensesRecord;
     }
     private static double amountInput(Scanner scanner) {
 
@@ -133,18 +132,17 @@ public class Application  {
         budget.deleteRecord(chosenId);
     }
 
-    private static void editRecord(Scanner scanner, Budget budget){
+    private static void editRecord(Scanner scanner, Record record, Budget budget){
         System.out.println("Input Id");
         long chosenId = numberChoice(scanner);
-        Record record = Budget.printRecordById(chosenId);
+         record = budget.printRecordById(chosenId);
 
         if (record != null) {
-            System.out.println("Amount: " + record.getIncomeAmount() + ". Edit: [Y] - yes, [N] - no");
+            System.out.println("Amount: " + record.getAmount() + ". Edit: [Y] - yes, [N] - no");
             String answer = scanner.next();
-
             if (answer.equalsIgnoreCase("y"))
-                record.setIncomeAmount(amountInput(scanner));
-            System.out.println("Category: " + (record.getIncomeCategory().getIncomeCategoryName() + ". Edit: [Y] - yes, [N] - no"));
+                record.setAmount(amountInput(scanner));
+            System.out.println("Category: " + ((IncomeRecord) record).getCategory().getIncomeCategoryName() + ". Edit: [Y] - yes, [N] - no");
             answer = scanner.next();
 
             if (answer.equalsIgnoreCase("y")) {
@@ -153,7 +151,7 @@ public class Application  {
                 }
                 //  (record.setIncomeCategory(incomeCategoryChoice(scanner)));
 
-                System.out.println("Category: " + (record.getExpensesCategory().getExpensePurpose() + ". Edit: [Y] - yes, [N] - no"));
+                System.out.println("Category: " + ((ExpenseRecord)record).getCategory().getExpensePurpose() + ". Edit: [Y] - yes, [N] - no");
                 answer = scanner.next();
                 if (answer.equalsIgnoreCase("y")) {
                     for (ExpensesCategory eC : ExpensesCategory.values()) {
@@ -163,11 +161,11 @@ public class Application  {
                 }
             }
 
-            System.out.println("Extra info: " + record.getExpensesAmount() + ". Edit: [Y] - yes, [N] - no");
+            System.out.println("Extra info: " + record.getAmount() + ". Edit: [Y] - yes, [N] - no");
             answer = scanner.next();
             if (answer.equals("Y"))
-                record.setExpensesInfo(textInput(scanner));
-            record.setIncomeInfo(textInput(scanner));
+                record.setInfo(textInput(scanner));
+            record.setInfo(textInput(scanner));
 
             budget.renewRecord(record);
         } else {
