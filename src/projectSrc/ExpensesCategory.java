@@ -23,7 +23,7 @@ public enum ExpensesCategory {
     public String toString() {
         return " {" +
                 "Expenses number = " + expenseNumber +
-                " is '" + expensePurpose + '\'' +
+                " purpose - " + expensePurpose + '\'' +
                 '}';
     }
 

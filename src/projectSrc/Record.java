@@ -20,7 +20,7 @@ public class Record {
 
     @Override
     public String toString() {
-        return String.format("%d, Amount = %.2f, Date: %s, Info: %s", id, amount, date, info);
+        return String.format(" %d, Amount = %.2f, Date: %s, Info: %s", id, amount, date, info);
     }
 
     @Override
@@ -48,9 +48,6 @@ public class Record {
         this.amount = amount;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
 
     public void setDate(LocalDate date) {
         this.date = date;
@@ -65,6 +62,6 @@ public class Record {
     }
 
     public String toCsv() {
-        return String.format("%d,%.2f,%s,%s", id, amount, date, info);
+        return String.format(" %d, %.2f, %s, %s", id, amount, date, info);
     }
 }

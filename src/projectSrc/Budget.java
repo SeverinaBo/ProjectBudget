@@ -1,8 +1,6 @@
 package src.projectSrc;
-import java.time.LocalDate;
-import java.util.*;
 
-
+import java.util.ArrayList;
 
 public class Budget {
 
@@ -12,14 +10,9 @@ public class Budget {
         records.add(record);
     }
 
-    public Budget() {
-
-    }
     public  ArrayList<Record> receiveAllRecords() {
         return records;
     }
-
-
 
     public Record printRecordById(long id) {
         for (Record record : records) {
@@ -29,8 +22,9 @@ public class Budget {
         }
         return null;
     }
+
     public  ArrayList<Record> receiveAllIncomeRecords() {
-        ArrayList<Record> incomeRecords = new ArrayList<>();
+        ArrayList<Record> incomeRecords = new ArrayList<Record>();
         for (Record record : records) {
             if (record instanceof IncomeRecord) {
                 incomeRecords.add(record);
@@ -40,7 +34,7 @@ public class Budget {
     }
 
     public  ArrayList<Record> receiveAllExpenseRecords() {
-        ArrayList<Record> expensesRecords = new ArrayList<>();
+        ArrayList<Record> expensesRecords = new ArrayList<Record>();
         for (Record record : records) {
             if (record instanceof ExpenseRecord) {
                 expensesRecords.add(record);
@@ -49,20 +43,17 @@ public class Budget {
         return expensesRecords;
     }
 
-
-    public double calculateBalance() {
+    public float balance() {
         float balance = 0;
         for(Record record : records){
             if(record instanceof IncomeRecord){
                 balance += record.getAmount();
             } else if (record instanceof ExpenseRecord) {
-                balance += record.getAmount();
+                balance -= record.getAmount();
             }
         }
         return balance;
     }
-
-
 
     public boolean deleteRecord(long id) {
         Record emptyRecord = new Record();
@@ -74,7 +65,6 @@ public class Budget {
         deleteRecord(record.getId());
         return records.add(record);
     }
-
 }
 
 

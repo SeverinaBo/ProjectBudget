@@ -10,6 +10,21 @@ public enum IncomeCategory {
     SCHOLARSHIP(3,"scholarship"),
     OTHERINCOME(4,"other income");
 
+    private int incomeNumber;
+    private String incomeCategoryName;
+
+    IncomeCategory(int a, String b){
+        incomeNumber = a;
+        incomeCategoryName = b;
+    }
+
+    @Override
+    public String toString() {
+        return " {" +
+                "Income number = '" + incomeNumber + " category " + incomeCategoryName + '\'' +
+                '}';
+    }
+
     public void setIncomeNumber(int incomeNumber) {
         this.incomeNumber = incomeNumber;
     }
@@ -17,25 +32,6 @@ public enum IncomeCategory {
     public void setIncomeCategoryName(String incomeCategoryName) {
         this.incomeCategoryName = incomeCategoryName;
     }
-
-    private int incomeNumber;
-    private String incomeCategoryName;
-
-
-    @Override
-    public String toString() {
-        return " {" +
-                "Income number = " + incomeNumber +
-                " is '" + incomeCategoryName + '\'' +
-                '}';
-    }
-
-    IncomeCategory(int a, String b){
-        incomeNumber = a;
-        incomeCategoryName = b;
-    }
-
-
 
     public int getIncomeNumber() {
         return incomeNumber;
@@ -52,5 +48,6 @@ public enum IncomeCategory {
             }
         }
         return null;
-    }}
+    }
+}
 

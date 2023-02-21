@@ -12,16 +12,16 @@ import static java.lang.System.out;
 
 public class Failas {
 
-    public Failas(String file){
+    public Failas(String files){
 
     }
-    public static void saveData(ArrayList<Record> incomeExpenseArr) {
+    public static void saveData(ArrayList<Record> records) {
         PrintWriter printWriter = null;
         try {
             FileWriter fileWriter = new FileWriter("src/failas.csv",false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             printWriter = new PrintWriter(bufferedWriter);
-            for (Record record : incomeExpenseArr) {
+            for (Record record : records) {
                 printWriter.println(record.toCsv());
             }
             printWriter.flush();
@@ -37,30 +37,21 @@ public class Failas {
     }
 
 
-    public static List<Record> printData() {
-        ArrayList<Record> records = new ArrayList<>();
-        BufferedReader bufferedReader = null;
-        try{
-            File fileIs = new File("src/failas.csv");
-            FileInputStream fis = new FileInputStream(fileIs);
-            bufferedReader = new BufferedReader(new InputStreamReader(fis));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
+    public static ArrayList<Record> printData() throws IOException{
+        ArrayList<Record> records = new ArrayList<Record>();
+        String line = "";
+        String path = "src/failas.csv";
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
                 records.add(recordFromCsvData(line));
+//                irasai.add(irasasIsCSV(linija));
             }
-        }
-        catch (IOException e) {
-            out.println("Klaida! Napavyko nuskaityti duomenu is failo");
-        } finally {
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                out.println("Klaida! Napavyko uzdaryti buffered readerio");
-            }
+        } catch (IOException e) {
+            System.out.println("Error...can't read data from file.");
         }
         return records;
     }
-
 
 
     private static Record recordFromCsvData(String csv) {
