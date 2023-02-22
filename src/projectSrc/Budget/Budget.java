@@ -1,16 +1,15 @@
-package src.projectSrc;
+package src.projectSrc.Budget;
 
 import java.util.ArrayList;
 
 public class Budget {
 
     public ArrayList<Record> records = new ArrayList<>();
-
     public void addRecord(Record record) {
         records.add(record);
     }
 
-    public  ArrayList<Record> receiveAllRecords() {
+   public  ArrayList<Record> receiveAllRecords() {
         return records;
     }
 
@@ -23,7 +22,7 @@ public class Budget {
         return null;
     }
 
-    public  ArrayList<Record> receiveAllIncomeRecords() {
+    public ArrayList<Record> receiveAllIncomeRecords() {
         ArrayList<Record> incomeRecords = new ArrayList<Record>();
         for (Record record : records) {
             if (record instanceof IncomeRecord) {
@@ -42,18 +41,17 @@ public class Budget {
         }
         return expensesRecords;
     }
-
     public float balance() {
         float balance = 0;
-        for(Record record : records){
-            if(record instanceof IncomeRecord){
-                balance += record.getAmount();
-            } else if (record instanceof ExpenseRecord) {
-                balance -= record.getAmount();
+            for(Record record : records){
+                if(record instanceof IncomeRecord){
+                    balance += record.getAmount();
+                } else if (record instanceof ExpenseRecord) {
+                    balance -= record.getAmount();
+                }
             }
+            return balance;
         }
-        return balance;
-    }
 
     public boolean deleteRecord(long id) {
         Record emptyRecord = new Record();

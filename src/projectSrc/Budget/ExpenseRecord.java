@@ -1,20 +1,15 @@
-package src.projectSrc;
+package src.projectSrc.Budget;
 
 import java.time.LocalDate;
 
-public class ExpenseRecord extends Record{
-
-
+public class ExpenseRecord extends Record {
     public final static String recordType = "EXPENSE RECORD";
 
     private ExpensesCategory category;
-
     private String name;
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }

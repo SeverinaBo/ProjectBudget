@@ -1,4 +1,4 @@
-package src.projectSrc;
+package src.projectSrc.Budget;
 
 import java.time.LocalDate;
 

@@ -1,6 +1,6 @@
 
 
-package src.projectSrc;
+package src.projectSrc.Budget;
 
 
 public enum IncomeCategory {

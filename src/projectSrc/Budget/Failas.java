@@ -1,51 +1,44 @@
-package src.projectSrc;
-
-
+package src.projectSrc.Budget;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.System.out;
-
 
 public class Failas {
 
-    public Failas(String files){
+    public Failas(String BudgetFile){
 
     }
     public static void saveData(ArrayList<Record> records) {
-        PrintWriter printWriter = null;
+        PrintWriter pw = null;
         try {
-            FileWriter fileWriter = new FileWriter("src/failas.csv",false);
+            FileWriter fileWriter = new FileWriter("src.projectSrc/BudgetFile.csv",false);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            printWriter = new PrintWriter(bufferedWriter);
+            pw = new PrintWriter(bufferedWriter);
             for (Record record : records) {
-                printWriter.println(record.toCsv());
+                pw.println(record.toCsv());
             }
-            printWriter.flush();
+            pw.flush();
             System.out.println("Data is saved");
         } catch (IOException e) {
-            printWriter.println("Error!Can't save to file");
+            System.out.println("Error! Can't save to file");
         } catch (NullPointerException npe){
-            out.println("PrintWriter can't close");;
+            System.out.println("PrintWriter can't close");
         } finally {
-            assert printWriter != null;
-            printWriter.close();
+            assert pw != null;
+            pw.close();
         }
     }
 
 
     public static ArrayList<Record> printData() throws IOException{
-        ArrayList<Record> records = new ArrayList<Record>();
+        ArrayList<Record> records = new ArrayList<>();
         String line = "";
-        String path = "src/failas.csv";
+        String path = "src.projectSrc/BudgetFile.csv";
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(",");
                 records.add(recordFromCsvData(line));
-//                irasai.add(irasasIsCSV(linija));
             }
         } catch (IOException e) {
             System.out.println("Error...can't read data from file.");
@@ -56,7 +49,7 @@ public class Failas {
 
     private static Record recordFromCsvData(String csv) {
         String[] data = csv.split(",");
-        Record record = new Record();
+        Record record = null;
         if (IncomeRecord.recordType.equals(data[0])) {
             IncomeRecord incomeRecord = new IncomeRecord();
             incomeRecord.setId(Long.parseLong(data[1]));
@@ -65,7 +58,6 @@ public class Failas {
             incomeRecord.setInfo(data[4]);
             incomeRecord.setCategory(IncomeCategory.incomeCategoryByNumber(Integer.parseInt(data[5])));
             record = incomeRecord;
-
         } else if (ExpenseRecord.recordType.equals(data[0])) {
             ExpenseRecord expenseRecord = new ExpenseRecord();
             expenseRecord.setId(Long.parseLong(data[1]));

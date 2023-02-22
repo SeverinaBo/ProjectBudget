@@ -1,4 +1,4 @@
-package src.projectSrc;
+package src.projectSrc.Budget;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -39,16 +39,15 @@ public class Application {
         private static int mainMenu (Scanner scanner){
             System.out.println
                     ("""
-                            [1] - new income record
-                            [2] - new expenses record
-                            [3] - print all records
-                            [4] - edit records
-                            [5] - balance
-                            [6] - print from file
-                            [7] - save to file
-                            [8] - delete record
-                            [9] - close the program""");
-            return numberChoice(scanner, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+                            [1] - log new record
+                            [2] - print all records
+                            [3] - edit records
+                            [4] - balance
+                            [5] - count balance
+                            [6] - save to file
+                            [7] - delete record(will need ID)
+                            [8] - close the program\s""");
+            return numberChoice(scanner, 1, 2, 3, 4, 5, 6, 7, 8);
         }
 
         private static Record newIncomeRecord (Scanner scanner){
@@ -104,20 +103,6 @@ public class Application {
             return expensesRecord;
         }
 
-   /*     private static double amountInput (Scanner scanner){
-            boolean notInput = true;
-            double amount = scanner.nextDouble();
-            while (notInput) {
-                String inputData = scanner.next();
-                try {
-                    amount = Double.parseDouble(inputData);
-                    notInput = false;
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Error...input a number");
-                }
-            }
-            return amount;
-        }*/
 
 
         private static void deleteRecord (Scanner scanner, Record record, Budget budget){
@@ -207,8 +192,6 @@ public class Application {
                 }
             }
         }
-
-
         private static int chooseRecords (Scanner scanner){
             System.out.println(
                     "Choose: \n" +
@@ -235,7 +218,7 @@ public class Application {
                     System.out.println("Error...please input a number");
                     break;
                 }
-            }
+        }
             return chosen;
         }
 
@@ -250,53 +233,8 @@ public class Application {
             return result;
         }
 
-
-       private static ExpensesCategory expensesCategoryChoice (Scanner scanner){
-            ExpensesCategory expensesCategory = null;
-            boolean notInput = true;
-
-            while (notInput) {
-                String inputData = scanner.next();
-                try {
-                    int number = Integer.parseInt(inputData);
-                    expensesCategory = ExpensesCategory.expensesCategoryByNumber(number);
-                    if (expensesCategory != null) {
-                        notInput = false;
-                    } else {
-                        System.out.println("Expenses category not found");
-                    }
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Error...please input a number");
-                }
-            }
-            return expensesCategory;
-        }
-
-
-        private static IncomeCategory incomeCategoryChoice (Scanner scanner){
-            IncomeCategory incomeCategory = null;
-            boolean notInput = true;
-            while (notInput) {
-                String inputData = scanner.next();
-                try {
-                    int number = Integer.parseInt(inputData);
-                    incomeCategory = IncomeCategory.incomeCategoryByNumber(number);
-                    if (incomeCategory != null) {
-                        notInput = false;
-                    } else {
-                        System.out.println("Input category not found");
-                    }
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Error...please input a number");
-                }
-            }
-            return incomeCategory;
-        }
-
         private static void printBalance (Budget budget){
             float balance = budget.balance();
             System.out.println(String.format("Balance: %.2fEur%n", balance));
         }
-
-
 }

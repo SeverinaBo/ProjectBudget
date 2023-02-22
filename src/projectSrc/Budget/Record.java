@@ -1,4 +1,4 @@
-package src.projectSrc;
+package src.projectSrc.Budget;
 
 import java.time.LocalDate;
 
@@ -25,11 +25,7 @@ public class Record {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Record && id == ((Record)obj).getId()) {
-            return true;
-        } else {
-            return false;
-        }
+        return obj instanceof Record && id == ((Record) obj).getId();
     }
 
     public long getId() {

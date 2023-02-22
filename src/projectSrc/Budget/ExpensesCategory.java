@@ -1,4 +1,4 @@
-package src.projectSrc;
+package src.projectSrc.Budget;
 
 
 public enum ExpensesCategory {
@@ -8,6 +8,7 @@ public enum ExpensesCategory {
     TAXES(3,"taxes"),
     TRANSPORTATION(4,"transportation"),
     OTHEREXPENSES(5,"other expenses");
+
     private int expenseNumber;
     private String expensePurpose;
 
@@ -24,7 +25,7 @@ public enum ExpensesCategory {
         return " {" +
                 "Expenses number = " + expenseNumber +
                 " purpose - " + expensePurpose + '\'' +
-                '}';
+                "}";
     }
 
     ExpensesCategory(int a, String b){
